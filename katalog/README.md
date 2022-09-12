@@ -25,7 +25,7 @@ Other than that, we should use a virtual environment to make sure that all devel
 
 <br/>
 
-## This project step by step
+## Step by step in making this project
 1. Create a katalog app if it doesn't already exist.
 2. Append "katalog" to the `INSTALLED_APPS` list in `project_django/settings.py`.
 
