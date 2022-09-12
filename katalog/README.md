@@ -140,4 +140,5 @@ Other than that, we should use a virtual environment to make sure that all devel
     - Push your changes to your github repository if you haven't already
     - Go to Actions in your github repository
       - Run/Re-run all jobs
-    - Done! your Django project should be deployed.
+    - Done!
+      - Your Django project should've been deployed.
