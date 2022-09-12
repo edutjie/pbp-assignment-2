@@ -9,7 +9,7 @@
 ## Django Diagram
 <br/>
 
-![diagram](/static/media/diagram.png)
+![diagram](/images/diagram.png)
 
 <br/>
 
