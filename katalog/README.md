@@ -6,6 +6,8 @@
 
 **Kelas:** D
 
+**Link:** [Deployed Heroku Website](https://edutjie-pbp-2.herokuapp.com/)
+
 ## Django Diagram
 <br/>
 
@@ -142,3 +144,4 @@ Other than that, we should use a virtual environment to make sure that all devel
       - Run/Re-run all jobs
     - Done!
       - Your Django project should've been deployed.
+      - Mine: [edutjie-pbp-2.herokuapp.com](https://edutjie-pbp-2.herokuapp.com)
