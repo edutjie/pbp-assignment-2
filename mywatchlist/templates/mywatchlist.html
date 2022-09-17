@@ -10,14 +10,16 @@
 <h5>Student ID:</h5>
 <p>{{ student_id }}</p>
 
-<h5>Pesan:</h5>
-<p>
-  {% if watchlist|count_watched >= watchlist|count_not_watched  %}
-  {{ "Selamat, kamu sudah banyak menonton!" }}
-  {% else %}
-  {{ "Wah, kamu masih sedikit menonton!" }}
-  {% endif %}
-</p>
+<h5>Message:</h5>
+{% if watchlist|count_watched >= watchlist|count_not_watched  %}
+    <p style="color:green;">
+        {{ "Selamat, kamu sudah banyak menonton!" }}
+    </p>
+    {% else %}
+    <p style="color:red;">
+        {{ "Wah, kamu masih sedikit menonton!" }}
+    </p>
+{% endif %}
 <table>
   <tr>
     <th>Watched</th>
