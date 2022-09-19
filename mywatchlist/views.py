@@ -15,7 +15,6 @@ def show_watchlist(request):
             "name": "Eduardus Tjitrahardja",
             "student_id": "2106653602",
             "watchlist": watchlist,
-            "watchlist_watched_length": sum([i.watched for i in watchlist]),
         },
     )
 
