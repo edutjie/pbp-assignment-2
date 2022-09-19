@@ -18,7 +18,7 @@ A platform may use data from many ends, so we need to have data delivery to make
 
 ## Step by step in making this assignment
 
-1.  Create a mywatchlist app if it doesn't already exist.
+1.  Create a mywatchlist app if it doesn't already exist. Using `python manage.py startapp mywatchlist`
 2.  Append "mywatchlist" to the `INSTALLED_APPS` list in `project_django/settings.py`.
 
         INSTALLED_APPS = [
@@ -39,6 +39,8 @@ A platform may use data from many ends, so we need to have data delivery to make
             release_date = models.DateField()
             review = models.TextField()
 
+    After making changes on the model, you have to run `python manage.py makemigrations` and `python manage.py migrate` to migrate your model changes to the database.
+
 4.  Create a json in `mywatchlist/fixtures/` called `initial_mywatchlist_data.json` and fill it with a list of dummy objects. For example:
 
         [
@@ -56,13 +58,13 @@ A platform may use data from many ends, so we need to have data delivery to make
             ...
         ]
 
-5.  Create a `show_watchlist`, `show_watchlist_json` and `show_watchlist_xml` function in `views.py`.
+5.  Create a `show_watchlist_html`, `show_watchlist_json` and `show_watchlist_xml` function in `views.py`.
 
         from mywatchlist.models import MyWatchList
 
     It uses `MyWatchList` model to retrieves data from the database (in this case `fixtures/initial_catalog_data.json`).
 
-        def show_watchlist(request):
+        def show_watchlist_html(request):
             return render(
                 request,
                 "mywatchlist.html",
@@ -73,7 +75,7 @@ A platform may use data from many ends, so we need to have data delivery to make
                 },
             )
 
-    `show_watchlist` renders the `mywatchlist.html` template with the data retrieved from the database and name, student_id.
+    `show_watchlist_html` renders the `mywatchlist.html` template with the data retrieved from the database and name, student_id.
 
         def show_watchlist_json(request):
         return HttpResponse(
@@ -100,20 +102,20 @@ A platform may use data from many ends, so we need to have data delivery to make
 
 7.  Create `app_name` and `urlpatterns` in `mywatchlist/urls.py`.
 
-        from katalog.views import show_catalog
+        from mywatchlist.views import show_watchlist_html, show_watchlist_json, show_watchlist_xml
 
         app_name = "katalog"
         urlpatterns = [
-            path("html/", show_watchlist, name="show_watchlist"),
+            path("html/", show_watchlist_html, name="show_watchlist_html"),
             path("json/", show_watchlist_json, name="show_watchlist_json"),
             path("xml/", show_watchlist_xml, name="show_watchlist_xml"),
         ]
 
-    This will create a path from `/mywatchlist` that calls `show_catalog`, `show_watchlist_json` and `show_watchlist_xml`.
+    This will create a path from `/mywatchlist` that calls `show_watchlist_html`, `show_watchlist_json` and `show_watchlist_xml`.
 
-8.
 
-- Use the return data from the `show_catalog` function and create a template html to be rendered.
+8. 
+- Use the return data from the `show_watchlist_html` function and create a template html to be rendered.
 - Create `mywatchlist.html` file in `mywatchlist/templates/`.
 - Fill the file with:
 
@@ -179,17 +181,41 @@ A platform may use data from many ends, so we need to have data delivery to make
         def count_watched(value):
             return sum([i.watched for i in value])
 
-9.  To load the data from `katalog/fixtures`, run this command:
+9. Create a Test Unit:
+   - Create `tests.py` in `mywatchlist/`
+   - Fill it with:  
+
+            from django.test import TestCase, Client
+            from django.urls import reverse
+
+            class MyWatchListResponseTest(TestCase):
+                def setUp(self):
+                    self.client = Client()
+
+            def test_url_html_exists(self):
+                response = self.client.get(reverse("mywatchlist:show_watchlist_html"))
+                self.assertEqual(response.status_code, 200)
+            
+            def test_url_json_exists(self):
+                response = self.client.get(reverse("mywatchlist:show_watchlist_json"))
+                self.assertEqual(response.status_code, 200)
+
+            def test_url_xml_exists(self):
+                response = self.client.get(reverse("mywatchlist:show_watchlist_xml"))
+                self.assertEqual(response.status_code, 200)
+
+    
+10. To load the data from `katalog/fixtures`, run this command:
 
         python manage.py loaddata initial_catalog_data.json
 
-10. Replace `Procfile`'s release with
+11. Replace `Procfile`'s release with
 
         release: sh -c 'python manage.py migrate && python manage.py loaddata initial_catalog_data.json && python manage.py loaddata initial_mywatchlist_data.json'
 
     so it will load `initial_mywatchlist_data.json` when deployed in Heroku.
 
-11. Deploy the project using Heroku
+12. Deploy the project using Heroku
     - Go to Heroku, create a new app
     - Go to the Heroku settings and copy your `API Key`
     - Go to your github repository
@@ -203,3 +229,14 @@ A platform may use data from many ends, so we need to have data delivery to make
     - Done!
       - Your Django project should've been deployed.
       - Mine: [edutjie-pbp-2.herokuapp.com](https://edutjie-pbp-2.herokuapp.com)
+
+## Postman Responses
+
+### HTML Response
+![postman-html](/images/postman-html.png)
+
+### JSON Response
+![postman-json](/images/postman-json.png)
+
+### XML Response
+![postman-xml](/images/postman-xml.png)

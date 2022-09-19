@@ -7,7 +7,7 @@ from django.core import serializers
 watchlist = MyWatchList.objects.all()
 
 
-def show_watchlist(request):
+def show_watchlist_html(request):
     return render(
         request,
         "mywatchlist.html",
