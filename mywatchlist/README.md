@@ -192,17 +192,17 @@ A platform may use data from many ends, so we need to have data delivery to make
                 def setUp(self):
                     self.client = Client()
 
-            def test_url_html_exists(self):
-                response = self.client.get(reverse("mywatchlist:show_watchlist_html"))
-                self.assertEqual(response.status_code, 200)
-            
-            def test_url_json_exists(self):
-                response = self.client.get(reverse("mywatchlist:show_watchlist_json"))
-                self.assertEqual(response.status_code, 200)
+                def test_url_html_exists(self):
+                    response = self.client.get(reverse("mywatchlist:show_watchlist_html"))
+                    self.assertEqual(response.status_code, 200)
+                
+                def test_url_json_exists(self):
+                    response = self.client.get(reverse("mywatchlist:show_watchlist_json"))
+                    self.assertEqual(response.status_code, 200)
 
-            def test_url_xml_exists(self):
-                response = self.client.get(reverse("mywatchlist:show_watchlist_xml"))
-                self.assertEqual(response.status_code, 200)
+                def test_url_xml_exists(self):
+                    response = self.client.get(reverse("mywatchlist:show_watchlist_xml"))
+                    self.assertEqual(response.status_code, 200)
 
     
 10. To load the data from `katalog/fixtures`, run this command:
