@@ -10,18 +10,19 @@
 <h5>Student ID:</h5>
 <p>{{ student_id }}</p>
 
-<h5>Message:</h5>
-{% if watchlist|count_watched >= watchlist|count_not_watched  %}
+<div class="message-box">
+  {% if watchlist|count_watched >= watchlist|count_not_watched  %}
     <p style="color:green;">
-        {{ "Selamat, kamu sudah banyak menonton!" }}
+        {{ "👏 Selamat, kamu sudah banyak menonton!" }}
     </p>
-    {% else %}
+  {% else %}
     <p style="color:red;">
-        {{ "Wah, kamu masih sedikit menonton!" }}
+        {{ "😔 Wah, kamu masih sedikit menonton!" }}
     </p>
-{% endif %}
+  {% endif %}
+</div>
 <table>
-  <tr>
+  <tr style="background-color: #ced4da;">
     <th>Watched</th>
     <th>Title</th>
     <th>Rating</th>
@@ -29,13 +30,21 @@
     <th>Review</th>
   </tr>
   {% for movie in watchlist %}
-  <tr>
-    <td>{{movie.watched}}</td>
-    <td>{{movie.title}}</td>
-    <td>{{movie.rating}}</td>
-    <td>{{movie.release_date}}</td>
-    <td>{{movie.review}}</td>
-  </tr>
+    {% if forloop.counter0|modulo:2 != 0 %}
+      <tr style="background-color: #e9ecef;">
+    {% else %}
+      <tr>
+    {% endif %}
+        {% if movie.watched  %}
+          <td style="text-align: center;">✅</td>
+        {% else %}
+          <td style="text-align: center;">❌</td>
+        {% endif %}
+        <td>{{movie.title}}</td>
+        <td>{{movie.rating|rating_star}}</td>
+        <td>{{movie.release_date}}</td>
+        <td>{{movie.review}}</td>
+      </tr>
   {% endfor %}
 </table>
 

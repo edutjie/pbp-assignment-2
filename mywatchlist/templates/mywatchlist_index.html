@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    gap: 5px;
+  "
+>
+  <div
+    style="
+      padding: 10px;
+      background-color: #ef476f;
+      border-radius: 5px;
+      color: aliceblue;
+      cursor: pointer;
+    ""
+  >
+    <a href="{{html_url}}" style="text-decoration: none; color: inherit"
+      >HTML</a
+    >
+  </div>
+  <div
+    style="
+      padding: 10px;
+      background-color: #ffd166;
+      border-radius: 5px;
+      color: #073b4c;
+      cursor: pointer;
+    "
+  >
+    <a href="{{json_url}}" style="text-decoration: none; color: inherit"
+      >JSON</a
+    >
+  </div>
+  <div
+    style="
+      padding: 10px;
+      background-color: #118ab2;
+      border-radius: 5px;
+      color: aliceblue;
+      cursor: pointer;
+    "
+  >
+    <a href="{{xml_url}}" style="text-decoration: none; color: inherit">XML</a>
+  </div>
+</div>
+{% endblock content %}
