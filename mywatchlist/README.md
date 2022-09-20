@@ -91,7 +91,7 @@ A platform may use data from many ends, so we need to have data delivery to make
 
     `show_watchlist_xml` renders a xml formatted data with the data retrieved from the database.
 
-6.  Append katalog path to `urlpatterns` list in `project_django/urls.py`.
+6.  Append mywatchlist path to `urlpatterns` list in `project_django/urls.py`.
 
         urlpatterns = [
             ...
@@ -104,7 +104,7 @@ A platform may use data from many ends, so we need to have data delivery to make
 
         from mywatchlist.views import show_watchlist_html, show_watchlist_json, show_watchlist_xml
 
-        app_name = "katalog"
+        app_name = "mywatchlist"
         urlpatterns = [
             path("html/", show_watchlist_html, name="show_watchlist_html"),
             path("json/", show_watchlist_json, name="show_watchlist_json"),
@@ -203,11 +203,14 @@ A platform may use data from many ends, so we need to have data delivery to make
                 def test_url_xml_exists(self):
                     response = self.client.get(reverse("mywatchlist:show_watchlist_xml"))
                     self.assertEqual(response.status_code, 200)
+    - To run this test:
+      - run `python manage.py collectstatic` to collect static files.
+      - then run `python manage.py test` to run the tests.
 
     
-10. To load the data from `katalog/fixtures`, run this command:
+10. To load the data from `mywatchlist/fixtures`, run this command:
 
-        python manage.py loaddata initial_catalog_data.json
+        python manage.py loaddata initial_mywatchlist_data.json
 
 11. Replace `Procfile`'s release with
 
