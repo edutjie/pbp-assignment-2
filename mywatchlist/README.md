@@ -6,7 +6,7 @@
 
 **Kelas:** D
 
-**Link:** [Deployed Heroku Website](https://edutjie-pbp-2.herokuapp.com/)
+**Link:** [Deployed Heroku Website](https://edutjie-pbp-2.herokuapp.com/mywatchlist/)
 
 ## JSON vs XML vs HTML
 
