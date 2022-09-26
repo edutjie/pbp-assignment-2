@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load todolist_customtags %}
+
+<h1>{{ username }}</h1>
+<table>
+    <tr style="background-color: #ced4da;">
+      <th>Task</th>
+      <th>Description</th>
+    </tr>
+    {% for task in todolist %}
+      {% if forloop.counter0|modulo:2 != 0 %}
+        <tr style="background-color: #e9ecef;">
+      {% else %}
+        <tr>
+      {% endif %}
+          <td>{{task.title}}</td>
+          <td>{{task.description}}</td>
+        </tr>
+    {% endfor %}
+  </table>
+
+{% endblock content %}
