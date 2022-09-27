@@ -86,5 +86,5 @@ def delete_task(request, id):
 def update_finished(request, id):
     task = Task.objects.get(user=request.user, id=id)
     task.is_finished = not task.is_finished
-    task.save(update_fields = ['is_finished'])
+    task.save(update_fields=["is_finished"])
     return HttpResponseRedirect(reverse("todolist:show_todolist"))
