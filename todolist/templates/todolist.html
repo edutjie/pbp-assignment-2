@@ -1,23 +1,27 @@
-{% extends 'base.html' %}
-{% block content %}
-{% load todolist_customtags %}
+{% extends 'base.html' %} {% block content %} {% load todolist_customtags %}
 
 <h1>{{ username }}</h1>
+<button style="margin-bottom: 20px; text-decoration: none; color: inherit">
+  <a href="{% url 'todolist:create_task' %}">Tambah Task</a>
+</button>
 <table>
-    <tr style="background-color: #ced4da;">
-      <th>Task</th>
-      <th>Description</th>
-    </tr>
-    {% for task in todolist %}
-      {% if forloop.counter0|modulo:2 != 0 %}
-        <tr style="background-color: #e9ecef;">
-      {% else %}
-        <tr>
-      {% endif %}
-          <td>{{task.title}}</td>
-          <td>{{task.description}}</td>
-        </tr>
-    {% endfor %}
-  </table>
+  <tr style="background-color: #ced4da">
+    <th>Task</th>
+    <th>Description</th>
+    <th>Created At</th>
+  </tr>
+  {% for task in todolist %} {% if forloop.counter0|modulo:2 != 0 %}
+  <tr style="background-color: #e9ecef">
+    {% else %}
+  </tr>
+
+  <tr>
+    {% endif %}
+    <td>{{task.title}}</td>
+    <td>{{task.description}}</td>
+    <td>{{task.date}}</td>
+  </tr>
+  {% endfor %}
+</table>
 
 {% endblock content %}

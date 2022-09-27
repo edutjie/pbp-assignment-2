@@ -14,8 +14,8 @@ import datetime
 
 @login_required(login_url="/todolist/login/")
 def show_todolist(request):
-    u = User.objects.get(username=request.user)
-    todolist_objects = Task.objects.filter(user=u)
+    # u = User.objects.get(username=request.user)
+    todolist_objects = Task.objects.filter(user=request.user)
     context = {"todolist": todolist_objects, "username": request.user}
     return render(request, "todolist.html", context)
 
@@ -59,3 +59,18 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse("todolist:login"))
     response.delete_cookie("last_login")
     return response
+
+
+@login_required(login_url="/todolist/login/")
+def create_task(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        Task.objects.create(
+            user=request.user,
+            title=title,
+            description=description,
+            date=datetime.datetime.today(),
+        )
+        return HttpResponseRedirect(reverse("todolist:show_todolist"))
+    return render(request, "create_task.html")
