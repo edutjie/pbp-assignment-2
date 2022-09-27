@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from todolist.models import Task
-from django.contrib.auth.models import User
 import datetime
 
 # Create your views here.
@@ -74,3 +73,20 @@ def create_task(request):
         )
         return HttpResponseRedirect(reverse("todolist:show_todolist"))
     return render(request, "create_task.html")
+
+
+@login_required(login_url="/todolist/login/")
+def delete_task(request, id):
+    task = Task.objects.get(user=request.user, id=id)
+    task.delete()
+    return HttpResponseRedirect(reverse("todolist:show_todolist"))
+
+
+@login_required(login_url="/todolist/login/")
+def update_finished(request, id):
+    task = Task.objects.get(user=request.user, id=id)
+    tmp = not task.is_finished
+    task.is_finished = tmp
+    task.save(update_fields = ['is_finished'])
+    print(Task.objects.get(user=request.user, id=id).is_finished)
+    return HttpResponseRedirect(reverse("todolist:show_todolist"))

@@ -1,27 +1,51 @@
 {% extends 'base.html' %} {% block content %} {% load todolist_customtags %}
 
 <h1>{{ username }}</h1>
-<button style="margin-bottom: 20px; text-decoration: none; color: inherit">
-  <a href="{% url 'todolist:create_task' %}">Tambah Task</a>
+<button style="margin-bottom: 20px">
+  <a
+    href="{% url 'todolist:create_task' %}"
+    style="text-decoration: none; color: inherit"
+    >Tambah Task</a
+  >
 </button>
 <table>
   <tr style="background-color: #ced4da">
+    <th>Status</th>
     <th>Task</th>
     <th>Description</th>
     <th>Created At</th>
+    <th>Delete Task</th>
   </tr>
-  {% for task in todolist %} {% if forloop.counter0|modulo:2 != 0 %}
-  <tr style="background-color: #e9ecef">
-    {% else %}
-  </tr>
-
-  <tr>
-    {% endif %}
+  {% for task in todolist %}
+  <tr
+    style="
+        {% if forloop.counter0|modulo:2 != 0 %} background-color: #e9ecef; {% endif %}
+        {% if task.is_finished %} text-decoration: line-through; opacity: 0.5; {% endif %}
+      ">
+    <td>
+      <input
+        type="checkbox"
+        name="status"
+        id="status"
+        {% if task.is_finished %} checked {% endif %}
+        onchange="location.href='{% url 'todolist:update_finished' task.id %}'"
+      />
+    </td>
     <td>{{task.title}}</td>
     <td>{{task.description}}</td>
     <td>{{task.date}}</td>
+    <td style="display: flex; justify-content: center">
+      <button><a href="{% url 'todolist:delete_task' task.id %}">❌</a></button>
+    </td>
   </tr>
   {% endfor %}
 </table>
+<button style="margin-top: 20px">
+  <a
+    href="{% url 'todolist:logout' %}"
+    style="text-decoration: none; color: inherit"
+    >Logout</a
+  >
+</button>
 
 {% endblock content %}

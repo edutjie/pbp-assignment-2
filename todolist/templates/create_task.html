@@ -2,7 +2,7 @@
 {% block content %}
 
 <h3>{{ title }}</h3>
-<form method="post" style="display: flex; flex-direction: column;">
+<form method="post" style="display: flex; flex-direction: column; max-width: 50%; margin: auto; gap: 10px;">
     {% csrf_token %}
 
     <label for="title">Title</label>
