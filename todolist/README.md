@@ -8,7 +8,7 @@
 
 **Link:** [Deployed Heroku Website](https://edutjie-pbp-2.herokuapp.com/todolist/)
 
-## `{% csrf_token %}`
+## What is `{% csrf_token %}`?
 
 **The Cross-Site Request Forgery (CSRF)** is an attack that forces an end-user to execute unwanted actions on a web application in which they have authenticated themselves.
 
@@ -30,7 +30,7 @@ When a user submitted a form, it will send a "POST" request to the server and th
 ## Step by step in making this assignment
 
 1.  Create a todolist app if it doesn't already exist. Using `python manage.py startapp todolist`
-2.  Append "mywatchlist" to the `INSTALLED_APPS` list in `project_django/settings.py`.
+2.  Append "todolist" to the `INSTALLED_APPS` list in `project_django/settings.py`.
 
         INSTALLED_APPS = [
             ...
