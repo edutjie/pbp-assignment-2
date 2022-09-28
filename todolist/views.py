@@ -13,7 +13,6 @@ import datetime
 
 @login_required(login_url="/todolist/login/")
 def show_todolist(request):
-    # u = User.objects.get(username=request.user)
     todolist_objects = Task.objects.filter(user=request.user)
     context = {"todolist": todolist_objects, "username": request.user}
     return render(request, "todolist.html", context)
