@@ -1,51 +1,64 @@
 {% extends 'base.html' %} {% block content %} {% load todolist_customtags %}
 
-<h1>{{ username }}</h1>
-<button style="margin-bottom: 20px">
-  <a
-    href="{% url 'todolist:create_task' %}"
-    style="text-decoration: none; color: inherit"
-    >Tambah Task</a
+<div class="space-y-10 pt-10 max-w-[80%] mx-auto min-h-screen text-center">
+  <div class="flex gap-4 justify-center items-center">
+    <h1 class="text-2xl font-bold">Welcome back, <span class="text-blue-500">{{ username }}</span>!</h1>
+    <button>
+      <button
+        onclick="location.href='{% url 'todolist:logout' %}'"
+        type="button"
+        class="inline-block px-6 py-2 border-2 border-red-600 text-red-600 text-sm leading-tight rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
+      >
+        Logout
+      </button>
+    </button>
+  </div>
+  <button 
+    onclick="location.href='{% url 'todolist:create_task' %}'"
+    type="button"
+    class="inline-block mx-auto px-6 pt-2.5 pb-2 bg-blue-600 text-white text-md rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center gap-2 items-center"
   >
-</button>
-<table>
-  <tr style="background-color: #ced4da">
-    <th>Status</th>
-    <th>Task</th>
-    <th>Description</th>
-    <th>Created At</th>
-    <th>Delete Task</th>
-  </tr>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>    
+    <p>
+      Tambah Task
+    </p>
+  </button>
+
+  <div class="flex flex-wrap gap-20 justify-center pb-20">
   {% for task in todolist %}
-  <tr
-    style="
-        {% if forloop.counter0|modulo:2 != 0 %} background-color: #e9ecef; {% endif %}
-        {% if task.is_finished %} text-decoration: line-through; opacity: 0.5; {% endif %}
-      ">
-    <td>
-      <input
-        type="checkbox"
-        name="status"
-        id="status"
-        {% if task.is_finished %} checked {% endif %}
-        onchange="location.href='{% url 'todolist:update_finished' task.id %}'"
-      />
-    </td>
-    <td>{{task.title}}</td>
-    <td>{{task.description}}</td>
-    <td>{{task.date}}</td>
-    <td style="display: flex; justify-content: center">
-      <button><a href="{% url 'todolist:delete_task' task.id %}">❌</a></button>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
-<button style="margin-top: 20px">
-  <a
-    href="{% url 'todolist:logout' %}"
-    style="text-decoration: none; color: inherit"
-    >Logout</a
-  >
-</button>
+    <div class="flex justify-center {% if task.is_finished %} opacity-50 {% endif %}">
+      <div class="block rounded-lg shadow-lg bg-white max-w-sm text-center w-80">
+        <div class="py-3 px-6 border-b bg-gray-800 flex gap-4 text-white justify-center form-check items-center">
+          <label for="status inline-block">Finished?</label>
+          <input
+            type="checkbox"
+            name="status"
+            id="status"
+            {% if task.is_finished %} checked {% endif %}
+            onchange="location.href='{% url 'todolist:update_finished' task.id %}'"
+            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
+        </div>
+        <div class="p-6">
+          <h5 class="text-gray-900 text-xl font-bold mb-2">{{task.title}}</h5>
+          <p class="text-gray-700 text-sm mb-4">{{task.description}}</p>
+          <button
+            type="button"
+            class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+          >
+            <a href="{% url 'todolist:delete_task' task.id %}">Delete</a>
+          </button>
+        </div>
+        <div class="py-3 px-6 border-t border-gray-300 text-gray-600">
+          <p class="text-xs">Created At: </p>
+          <p>{{task.date}}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 
 {% endblock content %}

@@ -1,34 +1,39 @@
-{% extends 'base.html' %}
-
-{% block meta %}
+{% extends 'base.html' %} {% block meta %}
 <title>Registrasi Akun</title>
-{% endblock meta %}
+{% endblock meta %} {% block content %}
 
-{% block content %}  
+<div
+  class="flex flex-col min-h-screen justify-center items-center max-w-[60%] mx-auto"
+>
+  <div class="">
+    <h1 class="text-3xl font-bold">Registration Form</h1>
+    <form method="POST" class="overflow-x-auto relative shadow-md">
+      {% csrf_token %}
+      <table class="w-full text-sm text-left text-gray-900">
+        {{ form.as_table }}
+        <tr>
+          <td></td>
+          <td>
+            <input
+              data-mdb-ripple="true"
+              data-mdb-ripple-color="light"
+              class="col-span-3 inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+              type="submit"
+              value="Daftar"
+            />
+          </td>
+        </tr>
+      </table>
+    </form>
 
-<div class = "login">
-    
-    <h1>Formulir Registrasi</h1>  
-
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
-                    <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
-        </form>
-
-    {% if messages %}  
-        <ul>   
-            {% for message in messages %}  
-                <li>{{ message }}</li>  
-                {% endfor %}  
-        </ul>   
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
     {% endif %}
-
-</div>  
+  </div>
+</div>
 
 {% endblock content %}

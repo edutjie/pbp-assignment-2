@@ -1,17 +1,35 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
-<h3>{{ title }}</h3>
-<form method="post" style="display: flex; flex-direction: column; max-width: 50%; margin: auto; gap: 10px;">
+<div class="flex min-h-screen flex-col items-center justify-center gap-5">
+  <h1 class="text-3xl font-bold">Create Task</h1>
+  <form method="post">
     {% csrf_token %}
+    <div class="gap-5 text-left grid grid-cols-3 grid-rows-3">
+      <label for="title">Title:</label>
+      <input
+        type="text"
+        name="title"
+        placeholder="Isi judul task anda"
+        class="col-span-2 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      />
 
-    <label for="title">Title</label>
-    <input type="text" name="title" placeholder="Isi judul task anda">
+      <label for="password">Description:</label>
+      <input
+        type="text"
+        name="description"
+        placeholder="Isi deskripsi anda"
+        class="col-span-2 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      />
 
-    <label for="description">Description</label>
-    <input type="text" name="description" placeholder="Isi deskripsi anda">
-
-    <button type="submit">Create Task</button>
-</form>
+      <input
+        data-mdb-ripple="true"
+        data-mdb-ripple-color="light"
+        class="col-span-3 inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+        type="submit"
+        value="Create Task"
+      />
+    </div>
+  </form>
+</div>
 
 {% endblock %}
