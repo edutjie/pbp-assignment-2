@@ -28,8 +28,8 @@
 
   <div class="flex flex-wrap gap-20 justify-center pb-20">
   {% for task in todolist %}
-    <div class="flex justify-center {% if task.is_finished %} opacity-50 {% endif %}">
-      <div class="block rounded-lg shadow-lg bg-white max-w-sm text-center w-80">
+    <div class="flex justify-center {% if task.is_finished %} opacity-50 {% endif %} hover:scale-105 transition-all">
+      <div class="block rounded-lg shadow-lg hover:shadow-blue-500/30 bg-white max-w-sm text-center w-80">
         <div class="py-3 px-6 border-b bg-gray-800 flex gap-4 text-white justify-center form-check items-center">
           <label for="status inline-block">Finished?</label>
           <input
