@@ -3,20 +3,18 @@
 <div class="space-y-10 pt-10 max-w-[80%] mx-auto min-h-screen text-center">
   <div class="flex gap-4 justify-center items-center">
     <h1 class="text-2xl font-bold">Welcome back, <span class="text-blue-500">{{ username }}</span>!</h1>
-    <button>
-      <button
-        onclick="location.href='{% url 'todolist:logout' %}'"
-        type="button"
-        class="inline-block px-6 py-2 border-2 border-red-600 text-red-600 text-sm leading-tight rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
-      >
-        Logout
-      </button>
+    <button
+      onclick="location.href='{% url 'todolist:logout' %}'"
+      type="button"
+      class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
+    >
+      <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">Logout</span>
     </button>
   </div>
   <button 
     onclick="location.href='{% url 'todolist:create_task' %}'"
     type="button"
-    class="inline-block mx-auto px-6 pt-2.5 pb-2 bg-blue-600 text-white text-md rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center gap-2 items-center"
+    class="inline-block mx-auto hover:shadow-lg hover:shadow-blue-500/50 px-6 pt-2.5 pb-2 transition duration-150 ease-in-out flex align-center gap-2 items-center text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 rounded-lg px-5 py-2.5"
   >
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -30,7 +28,7 @@
   {% for task in todolist %}
     <div class="flex justify-center {% if task.is_finished %} opacity-50 {% endif %} hover:scale-105 transition-all">
       <div class="block rounded-lg shadow-lg hover:shadow-blue-500/30 bg-white max-w-sm text-center w-80">
-        <div class="py-3 px-6 border-b bg-gray-800 flex gap-4 text-white justify-center form-check items-center">
+        <div class="py-3 px-6 border-b bg-gray-800 {% if task.is_finished %} bg-gradient-to-r from-green-400 to-green-600 {% else %} from-purple-600 to-blue-500 {% endif %} flex gap-4 text-white justify-center form-check items-center rounded-t-lg hover:bg-gradient-to-bl transition-all">
           <label for="status inline-block">Finished?</label>
           <input
             type="checkbox"
@@ -38,17 +36,18 @@
             id="status"
             {% if task.is_finished %} checked {% endif %}
             onchange="location.href='{% url 'todolist:update_finished' task.id %}'"
-            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2"
           />
         </div>
         <div class="p-6">
           <h5 class="text-gray-900 text-xl font-bold mb-2">{{task.title}}</h5>
           <p class="text-gray-700 text-sm mb-4">{{task.description}}</p>
           <button
+            onclick="location.href='{% url 'todolist:delete_task' task.id %}'"
             type="button"
-            class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+            class="text-white bg-gradient-to-br from-pink-500 to-orange-400 shadow-lg shadow-red-500/30 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
           >
-            <a href="{% url 'todolist:delete_task' task.id %}">Delete</a>
+            Delete
           </button>
         </div>
         <div class="py-3 px-6 border-t border-gray-300 text-gray-600">
