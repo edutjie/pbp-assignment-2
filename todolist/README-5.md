@@ -35,6 +35,8 @@
 - etc   
 
 ## This assignment implementation
-I used tailwind css framework for this assignment because it makes styling easier since we just have to add classes that are implemented by tailwind in the element's class. For more information about the classes visi https://tailwindcss.com/. Before we can use tailwind's classes, we have to add `<script src="https://cdn.tailwindcss.com"></script>` in our `base.html` header.
+I used tailwind css framework for this assignment because it makes styling easier since we just have to add classes that are implemented by tailwind in the element's class. For more information about the classes visit https://tailwindcss.com/. Before we can use tailwind's classes, we have to add `<script src="https://cdn.tailwindcss.com"></script>` in our `base.html` header.
 
-After I have implemented all styling to the pages, I made it responsive using the media queries breakpoint from tailwind (`sm:`, `md:`, `lg:`, `xl:`, and `2xl:`) infront of the classes. For example, `flex-col md:flex-row` to make it `flex-row` when the our website width reaches the `md:` breakpoint and `flex-col` for anything below the md breakpoint. For more information of the breakpoints, visit https://tailwindcss.com/docs/responsive-design.
+After I have implemented all styling to the pages, I made it responsive using the media queries breakpoint from tailwind (`sm:`, `md:`, `lg:`, `xl:`, and `2xl:`) infront of the classes. For example, `flex-col md:flex-row` to make it `flex-row` when the our website width reaches the `md:` breakpoint and `flex-col` for anything below the md breakpoint. For more information of the breakpoints, visit https://tailwindcss.com/docs/responsive-design. 
+
+To implement bonus, just add `hover:` infront of the classes inside your elements' class that you want to give hover functionality. For example, `hover:scale-105` to make your element larger by 5% when your moouse hovering the element and add `transition-all` to make the hovering transition smooth. For more information about hover states, visit https://tailwindcss.com/docs/hover-focus-and-other-states. 
