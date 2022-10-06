@@ -13,7 +13,9 @@ import datetime
 
 @login_required(login_url="/todolist/login/")
 def show_todolist(request):
-    todolist_objects = Task.objects.filter(user=request.user)
+    todolist_objects = sorted(
+        Task.objects.filter(user=request.user), key=lambda x: x.is_finished
+    )
     context = {"todolist": todolist_objects, "username": request.user}
     return render(request, "todolist.html", context)
 
