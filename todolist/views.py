@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from todolist.models import Task
 import datetime
 
@@ -13,10 +14,10 @@ import datetime
 
 @login_required(login_url="/todolist/login/")
 def show_todolist(request):
-    todolist_objects = sorted(
-        Task.objects.filter(user=request.user), key=lambda x: x.is_finished
-    )
-    context = {"todolist": todolist_objects, "username": request.user}
+    # todolist_objects = sorted(
+    #     Task.objects.filter(user=request.user), key=lambda x: x.is_finished
+    # )
+    context = {"username": request.user}
     return render(request, "todolist.html", context)
 
 
@@ -78,14 +79,71 @@ def create_task(request):
 
 @login_required(login_url="/todolist/login/")
 def delete_task(request, id):
-    task = Task.objects.get(user=request.user, id=id)
-    task.delete()
-    return HttpResponseRedirect(reverse("todolist:show_todolist"))
+    if request.method == "DELETE":
+        task = Task.objects.get(user=request.user, id=id)
+        task.delete()
+        return JsonResponse(
+            {
+                "pk": task.id,
+                "fields": {
+                    "title": task.title,
+                    "description": task.description,
+                    "is_finished": task.is_finished,
+                    "date": task.date,
+                },
+            },
+            status=200,
+        )
 
 
 @login_required(login_url="/todolist/login/")
 def update_finished(request, id):
-    task = Task.objects.get(user=request.user, id=id)
-    task.is_finished = not task.is_finished
-    task.save(update_fields=["is_finished"])
-    return HttpResponseRedirect(reverse("todolist:show_todolist"))
+    if request.method == "PUT":
+        task = Task.objects.get(user=request.user, id=id)
+        task.is_finished = not task.is_finished
+        task.save()
+        return JsonResponse(
+            {
+                "pk": task.id,
+                "fields": {
+                    "title": task.title,
+                    "description": task.description,
+                    "is_finished": task.is_finished,
+                    "date": task.date,
+                },
+            },
+            status=200,
+        )
+
+
+# json
+@login_required(login_url="/todolist/login/")
+def show_json(request):
+    task = Task.objects.filter(user=request.user)
+    return HttpResponse(
+        serializers.serialize("json", task), content_type="application/json"
+    )
+
+
+def add_task(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        task = Task.objects.create(
+            user=request.user,
+            title=title,
+            description=description,
+            date=datetime.datetime.today(),
+        )
+        return JsonResponse(
+            {
+                "pk": task.id,
+                "fields": {
+                    "title": task.title,
+                    "description": task.description,
+                    "is_finished": task.is_finished,
+                    "date": task.date,
+                },
+            },
+            status=200,
+        )
