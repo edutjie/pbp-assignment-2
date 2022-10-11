@@ -79,17 +79,41 @@ def create_task(request):
 
 @login_required(login_url="/todolist/login/")
 def delete_task(request, id):
-    task = Task.objects.get(user=request.user, id=id)
-    task.delete()
-    return HttpResponseRedirect(reverse("todolist:show_todolist"))
+    if request.method == "DELETE":
+        task = Task.objects.get(user=request.user, id=id)
+        task.delete()
+        return JsonResponse(
+            {
+                "pk": task.id,
+                "fields": {
+                    "title": task.title,
+                    "description": task.description,
+                    "is_finished": task.is_finished,
+                    "date": task.date,
+                },
+            },
+            status=200,
+        )
 
 
 @login_required(login_url="/todolist/login/")
 def update_finished(request, id):
-    task = Task.objects.get(user=request.user, id=id)
-    task.is_finished = not task.is_finished
-    task.save(update_fields=["is_finished"])
-    return HttpResponseRedirect(reverse("todolist:show_todolist"))
+    if request.method == "PUT":
+        task = Task.objects.get(user=request.user, id=id)
+        task.is_finished = not task.is_finished
+        task.save()
+        return JsonResponse(
+            {
+                "pk": task.id,
+                "fields": {
+                    "title": task.title,
+                    "description": task.description,
+                    "is_finished": task.is_finished,
+                    "date": task.date,
+                },
+            },
+            status=200,
+        )
 
 
 # json

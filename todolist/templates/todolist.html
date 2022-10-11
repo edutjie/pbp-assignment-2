@@ -22,11 +22,8 @@
             <input
               type="checkbox"
               name="status"
-              id="status"
+              id="status-${task.pk}"
               ${task.fields.is_finished && "checked"}
-              onchange="location.href='{% url 'todolist:update_finished' ${
-                task.id
-              } %}'"
               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2"
             />
           </div>
@@ -36,9 +33,7 @@
             }</h5>
             <p class="text-gray-700 text-sm mb-4">${task.fields.description}</p>
             <button
-              onclick="location.href='{% url 'todolist:delete_task' ${
-                task.id
-              } %}'"
+              id="delete-${task.pk}"
               type="button"
               class="text-white bg-gradient-to-br from-pink-500 to-orange-400 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
             >
@@ -61,17 +56,70 @@
         });
         $.each(data, (i, value) => {
           $("#todolist").append(card(value)); // append to the div
+
+          // add event listener to the delete button
+          $(`#delete-${value.pk}`).click(() => {
+            deleteTask(value.pk);
+          });
+
+          // add event listener to the checkbox
+          $(`#status-${value.pk}`).click(() => {
+            updateFinished(value.pk);
+          });
         });
       });
     };
 
+    const deleteTask = id => {
+      // get the CSRF Token
+      const csrftoken = document.querySelector(
+        "[name=csrfmiddlewaretoken]"
+      ).value;
+
+      $.ajax({
+        url: "{% url 'todolist:delete_task' 0 %}".replace("0", id),
+        type: "DELETE",
+        headers: { "X-CSRFToken": csrftoken }, // give CSRF token to the header
+        mode: "same-origin", // Do not send CSRF token to another domain.
+        success: () => {
+          // remove the card
+          $(`#delete-${id}`).parent().parent().parent().remove();
+        },
+        error: error => {
+          console.log(error);
+        },
+      });
+    };
+
+    const updateFinished = id => {
+      // get the CSRF Token
+      const csrftoken = document.querySelector(
+        "[name=csrfmiddlewaretoken]"
+      ).value;
+
+      $.ajax({
+        url: "{% url 'todolist:update_finished' 0 %}".replace("0", id),
+        type: "PUT",
+        headers: { "X-CSRFToken": csrftoken }, // give CSRF token to the header
+        mode: "same-origin", // Do not send CSRF token to another domain.
+        success: () => {
+          // refresh
+          $("#todolist").empty();
+          renderTasks();
+        },
+        error: error => {
+          console.log(error);
+        },
+      });
+    };
+
     const openModal = e => {
-      e.preventDefault();
+      e.preventDefault(); // prevent refresh
       $("#create-task-modal").removeClass("hidden");
     };
 
     const closeModal = e => {
-      e.preventDefault(); // prevent refresh
+      // e.preventDefault(); // prevent refresh
       $("#create-task-modal").addClass("hidden");
     };
 
