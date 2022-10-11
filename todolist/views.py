@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from todolist.models import Task
 import datetime
 
@@ -13,10 +14,10 @@ import datetime
 
 @login_required(login_url="/todolist/login/")
 def show_todolist(request):
-    todolist_objects = sorted(
-        Task.objects.filter(user=request.user), key=lambda x: x.is_finished
-    )
-    context = {"todolist": todolist_objects, "username": request.user}
+    # todolist_objects = sorted(
+    #     Task.objects.filter(user=request.user), key=lambda x: x.is_finished
+    # )
+    context = {"username": request.user}
     return render(request, "todolist.html", context)
 
 
@@ -89,3 +90,12 @@ def update_finished(request, id):
     task.is_finished = not task.is_finished
     task.save(update_fields=["is_finished"])
     return HttpResponseRedirect(reverse("todolist:show_todolist"))
+
+
+# json
+@login_required(login_url="/todolist/login/")
+def show_json(request):
+    task = Task.objects.filter(user=request.user)
+    return HttpResponse(
+        serializers.serialize("json", task), content_type="application/json"
+    )
