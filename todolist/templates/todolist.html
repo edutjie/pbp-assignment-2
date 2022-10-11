@@ -102,10 +102,10 @@
         type: "PUT",
         headers: { "X-CSRFToken": csrftoken }, // give CSRF token to the header
         mode: "same-origin", // Do not send CSRF token to another domain.
-        success: () => {
+        success: response => {
           // refresh
-          $("#todolist").empty();
-          renderTasks();
+          deleteTask(response.pk);
+          $("#todolist").append(card(response));
         },
         error: error => {
           console.log(error);
@@ -147,8 +147,7 @@
           success: response => {
             $("#create-task-form").trigger("reset");
             closeModal();
-            $("#todolist").empty();
-            renderTasks();
+            $("#todolist").append(card(response));
           },
           error: error => {
             console.log(error);
