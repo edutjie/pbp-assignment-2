@@ -63,7 +63,7 @@
           });
 
           // add event listener to the checkbox
-          $(`#status-${value.pk}`).click(() => {
+          $(`#status-${value.pk}`).change(() => {
             updateFinished(value.pk);
           });
         });
@@ -104,8 +104,8 @@
         mode: "same-origin", // Do not send CSRF token to another domain.
         success: response => {
           // refresh
-          deleteTask(response.pk);
-          $("#todolist").append(card(response));
+          $("#todolist").empty();
+          renderTasks();
         },
         error: error => {
           console.log(error);
@@ -147,7 +147,7 @@
           success: response => {
             $("#create-task-form").trigger("reset");
             closeModal();
-            $("#todolist").append(card(response));
+            $("#todolist").prepend(card(response));
           },
           error: error => {
             console.log(error);
