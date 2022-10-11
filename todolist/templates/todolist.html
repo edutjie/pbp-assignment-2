@@ -65,20 +65,56 @@
       });
     };
 
-    renderTasks();
-
-    const openModal = (e) => {
+    const openModal = e => {
       e.preventDefault();
       $("#create-task-modal").removeClass("hidden");
     };
 
-    const closeModal = (e) => {
+    const closeModal = e => {
       e.preventDefault(); // prevent refresh
       $("#create-task-modal").addClass("hidden");
     };
 
+    $("#create-task-form").submit(e => {
+      e.preventDefault();
+
+      // get the CSRF Token
+      const csrftoken = document.querySelector(
+        "[name=csrfmiddlewaretoken]"
+      ).value;
+
+      const title = $("#title").val();
+      const description = $("#description").val();
+
+      if (title && description) {
+        $.ajax({
+          type: "POST",
+          url: "{% url 'todolist:add_task' %}",
+          headers: { "X-CSRFToken": csrftoken }, // give CSRF token to the header
+          mode: "same-origin", // Do not send CSRF token to another domain.
+          data: {
+            title: title,
+            description: description,
+          },
+          success: response => {
+            $("#create-task-form").trigger("reset");
+            closeModal();
+            $("#todolist").empty();
+            renderTasks();
+          },
+          error: error => {
+            console.log(error);
+          },
+        });
+      } else {
+        alert("Please fill all the fields");
+      }
+    });
+
     $("#create-task").click(openModal);
     $("#close-modal").click(closeModal);
+
+    renderTasks(); // render the tasks to the page
   });
 </script>
 
@@ -91,13 +127,14 @@
     <div class="p-4 sm:p-7">
       <div class="flex flex-col items-center justify-center gap-5">
         <h1 class="text-3xl font-bold">Create Task</h1>
-        <form method="post">
+        <form method="post" id="create-task-form">
           {% csrf_token %}
           <div class="gap-5 text-left grid grid-cols-3 grid-rows-3">
             <label for="title">Title:</label>
             <input
               type="text"
               name="title"
+              id="title"
               placeholder="Isi judul task anda"
               class="col-span-2 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             />
@@ -106,6 +143,7 @@
             <input
               type="text"
               name="description"
+              id="description"
               placeholder="Isi deskripsi anda"
               class="col-span-2 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             />

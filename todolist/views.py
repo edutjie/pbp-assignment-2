@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -99,3 +99,27 @@ def show_json(request):
     return HttpResponse(
         serializers.serialize("json", task), content_type="application/json"
     )
+
+
+def add_task(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        task = Task.objects.create(
+            user=request.user,
+            title=title,
+            description=description,
+            date=datetime.datetime.today(),
+        )
+        return JsonResponse(
+            {
+                "pk": task.id,
+                "fields": {
+                    "title": task.title,
+                    "description": task.description,
+                    "is_finished": task.is_finished,
+                    "date": task.date,
+                },
+            },
+            status=200,
+        )
